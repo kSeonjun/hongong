@@ -137,12 +137,542 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "id": "00bee4b7-ce10-449e-8867-a55ae2226457",
+   "metadata": {},
+   "source": [
+    "### DNN(Deep neural network; 심층 신경망) 만들기"
+   ]
+  },
+  {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 68,
    "id": "e127aea1-a000-4a49-a181-ab0e4554ef22",
    "metadata": {},
    "outputs": [],
-   "source": []
+   "source": [
+    "model = keras.Sequential([dense1, dense2])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "id": "7e570e48-70bd-433b-be49-02db278bd9f5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Model: \"sequential_1\"\n",
+      "_________________________________________________________________\n",
+      " Layer (type)                Output Shape              Param #   \n",
+      "=================================================================\n",
+      " dense (Dense)               (None, 100)               78500     \n",
+      "                                                                 \n",
+      " dense_1 (Dense)             (None, 10)                1010      \n",
+      "                                                                 \n",
+      "=================================================================\n",
+      "Total params: 79510 (310.59 KB)\n",
+      "Trainable params: 79510 (310.59 KB)\n",
+      "Non-trainable params: 0 (0.00 Byte)\n",
+      "_________________________________________________________________\n"
+     ]
+    }
+   ],
+   "source": [
+    "model.summary()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9efe39fc-e751-4edc-9b79-63ce7f746aeb",
+   "metadata": {},
+   "source": [
+    "### 사용법1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "id": "b6c5cf42-e32d-4655-b179-102b669cd33a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = keras.Sequential([\n",
+    "    keras.layers.Dense(100, activation='sigmoid', input_shape=(784,), name='hidden'),\n",
+    "    keras.layers.Dense(10, activation='softmax', name='output')\n",
+    "], name='패션 MNIST 모델')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "id": "eadd0e90-c42d-4338-9b1c-b6cd5b82567a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Model: \"패션 MNIST 모델\"\n",
+      "_________________________________________________________________\n",
+      " Layer (type)                Output Shape              Param #   \n",
+      "=================================================================\n",
+      " hidden (Dense)              (None, 100)               78500     \n",
+      "                                                                 \n",
+      " output (Dense)              (None, 10)                1010      \n",
+      "                                                                 \n",
+      "=================================================================\n",
+      "Total params: 79510 (310.59 KB)\n",
+      "Trainable params: 79510 (310.59 KB)\n",
+      "Non-trainable params: 0 (0.00 Byte)\n",
+      "_________________________________________________________________\n"
+     ]
+    }
+   ],
+   "source": [
+    "model.summary()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0609307f-786c-4c39-8cb1-4e3b6935ecd5",
+   "metadata": {},
+   "source": [
+    "### 사용법2 : 은닉층이 많은경우"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "id": "476948d6-39a2-42b7-92d6-e41b85d648f6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = keras.Sequential()\n",
+    "model.add(keras.layers.Dense(100, activation='sigmoid', input_shape=(784,)))\n",
+    "model.add(keras.layers.Dense(10, activation='softmax'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "id": "4a56bca6-bb62-45c7-a03e-6815894b6cdf",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Model: \"sequential_2\"\n",
+      "_________________________________________________________________\n",
+      " Layer (type)                Output Shape              Param #   \n",
+      "=================================================================\n",
+      " dense_2 (Dense)             (None, 100)               78500     \n",
+      "                                                                 \n",
+      " dense_3 (Dense)             (None, 10)                1010      \n",
+      "                                                                 \n",
+      "=================================================================\n",
+      "Total params: 79510 (310.59 KB)\n",
+      "Trainable params: 79510 (310.59 KB)\n",
+      "Non-trainable params: 0 (0.00 Byte)\n",
+      "_________________________________________________________________\n"
+     ]
+    }
+   ],
+   "source": [
+    "model.summary()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5d78974d-6ec1-4951-91da-9662c7e864a1",
+   "metadata": {},
+   "source": [
+    "### Train"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "id": "66f80298-1c2c-4434-b92b-1ea8a4c0ff11",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Epoch 1/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.5703 - accuracy: 0.8053\n",
+      "Epoch 2/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.4120 - accuracy: 0.8516\n",
+      "Epoch 3/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3775 - accuracy: 0.8632\n",
+      "Epoch 4/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3543 - accuracy: 0.8706\n",
+      "Epoch 5/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3378 - accuracy: 0.8783\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<keras.src.callbacks.History at 0x7fb867f119a0>"
+      ]
+     },
+     "execution_count": 82,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model.compile(loss='sparse_categorical_crossentropy', metrics='accuracy')\n",
+    "model.fit(train_scaled, train_target, epochs=5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0d4d4445-8014-40f8-b312-58f632bd80e2",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Validation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "id": "dbe706f8-b856-4d2a-8eee-d6f7eddefc43",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "375/375 [==============================] - 0s 818us/step - loss: 0.3645 - accuracy: 0.8690\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[0.3645218014717102, 0.8690000176429749]"
+      ]
+     },
+     "execution_count": 84,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model.evaluate(val_scaled, val_target)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3a623e40-6115-477b-a11f-8b58092eff4a",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "<br><br><br>\n",
+    "\n",
+    "### Flatten\n",
+    "* reshape(-1, x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "id": "8fe883f1-d644-49a3-8256-4a1ffd18ce19",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model =  keras.Sequential()\n",
+    "model.add(keras.layers.Flatten(input_shape=(28, 28)))\n",
+    "model.add(keras.layers.Dense(100, activation='relu'))\n",
+    "model.add(keras.layers.Dense(10, activation='softmax'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 91,
+   "id": "4ae51142-b731-4ea1-9526-61066b3c9515",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Model: \"sequential_7\"\n",
+      "_________________________________________________________________\n",
+      " Layer (type)                Output Shape              Param #   \n",
+      "=================================================================\n",
+      " flatten_2 (Flatten)         (None, 784)               0         \n",
+      "                                                                 \n",
+      " dense_8 (Dense)             (None, 100)               78500     \n",
+      "                                                                 \n",
+      " dense_9 (Dense)             (None, 10)                1010      \n",
+      "                                                                 \n",
+      "=================================================================\n",
+      "Total params: 79510 (310.59 KB)\n",
+      "Trainable params: 79510 (310.59 KB)\n",
+      "Non-trainable params: 0 (0.00 Byte)\n",
+      "_________________________________________________________________\n"
+     ]
+    }
+   ],
+   "source": [
+    "model.summary()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "98373fac-6615-41ef-8060-c0029318883a",
+   "metadata": {},
+   "source": [
+    "### 활성화 함수\n",
+    "\n",
+    "* sigmoid를 가장많이 사용했는데, 특성상 오른쪽 끝과 왼쪽 끝 부분의 출력을 신속하게 대응하지 못했다.\n",
+    "\n",
+    "ReLU\n",
+    "\n",
+    "* x\n",
+    "    * 0 (x<0)\n",
+    "    * x (x>)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "62c69b5d-d736-4b15-800e-39394505d8d8",
+   "metadata": {},
+   "source": [
+    "### Flatten 활용\n",
+    "\n",
+    "### train"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 93,
+   "id": "064099e6-7e7d-4684-a71a-240b45798110",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "(train_input, train_target), (test_input, test_target) = keras.datasets.fashion_mnist.load_data()\n",
+    "\n",
+    "train_scaled = train_input / 255.0\n",
+    "train_scaled, val_scaled, train_target, val_target = train_test_split(train_scaled, train_target, test_size=0.2, random_state=42)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "id": "7e09bf47-4c43-40c9-aa81-17899cc7830d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(48000, 28, 28)"
+      ]
+     },
+     "execution_count": 95,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "train_scaled.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 96,
+   "id": "2de58549-d90f-496b-91fe-544b6d9c99f9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Epoch 1/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.5313 - accuracy: 0.8123\n",
+      "Epoch 2/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3919 - accuracy: 0.8588\n",
+      "Epoch 3/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3512 - accuracy: 0.8732\n",
+      "Epoch 4/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3312 - accuracy: 0.8802\n",
+      "Epoch 5/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3138 - accuracy: 0.8853\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<keras.src.callbacks.History at 0x7fb868c21ca0>"
+      ]
+     },
+     "execution_count": 96,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model.compile(loss='sparse_categorical_crossentropy', metrics='accuracy')\n",
+    "model.fit(train_scaled, train_target, epochs=5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "760075e8-b27e-456c-bd8d-deda987fef35",
+   "metadata": {},
+   "source": [
+    "### Validation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 98,
+   "id": "05926fab-8083-413e-bd80-5d67b3049b6e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "375/375 [==============================] - 0s 806us/step - loss: 0.3583 - accuracy: 0.8733\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[0.35834744572639465, 0.8732500076293945]"
+      ]
+     },
+     "execution_count": 98,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model.evaluate(val_scaled, val_target)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2883caa2-fd56-4c8a-824c-d62930a342eb",
+   "metadata": {},
+   "source": [
+    "# 옵티마이저\n",
+    "* compile() base값\n",
+    "    * RMSprop(경사 하강법 알고리즘)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 101,
+   "id": "d6a36330-8576-49ec-bcdc-84820c03e1ed",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics='accuracy')\n",
+    "# sgd = keras.optimizer.SGD()\n",
+    "# model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics='accuracy')\n",
+    "# 위 코드와 동일"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 105,
+   "id": "967e2cf9-8a11-4dfa-9e67-81a96c244e53",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sgd = keras.optimizers.SGD(learning_rate=0.1)\n",
+    "model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics='accuracy')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ee981f87-21d9-4a94-93d8-2dae554845f7",
+   "metadata": {},
+   "source": [
+    "### adam 사용"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 107,
+   "id": "f727ea44-cc9c-4d26-9309-f67b82aef451",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Epoch 1/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.5292 - accuracy: 0.8134\n",
+      "Epoch 2/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3990 - accuracy: 0.8584\n",
+      "Epoch 3/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3558 - accuracy: 0.8714\n",
+      "Epoch 4/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3286 - accuracy: 0.8797\n",
+      "Epoch 5/5\n",
+      "1500/1500 [==============================] - 2s 1ms/step - loss: 0.3071 - accuracy: 0.8865\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<keras.src.callbacks.History at 0x7fb86b571ee0>"
+      ]
+     },
+     "execution_count": 107,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model =  keras.Sequential()\n",
+    "model.add(keras.layers.Flatten(input_shape=(28, 28)))\n",
+    "model.add(keras.layers.Dense(100, activation='relu'))\n",
+    "model.add(keras.layers.Dense(10, activation='softmax'))\n",
+    "\n",
+    "model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics='accuracy')\n",
+    "model.fit(train_scaled, train_target, epochs=5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 108,
+   "id": "6d3f03cb-1f1a-4a4c-b902-ac538136e2dd",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "375/375 [==============================] - 0s 805us/step - loss: 0.3307 - accuracy: 0.8793\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[0.33071744441986084, 0.8793333172798157]"
+      ]
+     },
+     "execution_count": 108,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model.evaluate(val_scaled, val_target)"
+   ]
   }
  ],
  "metadata": {
